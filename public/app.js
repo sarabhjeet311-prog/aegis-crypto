@@ -49,7 +49,6 @@ function initCoin() {
         borderRadius: '50%',
         overflow: 'hidden',
         backfaceVisibility: 'hidden',
-        WebkitBackfaceVisibility: 'hidden',
         boxShadow: '0 30px 80px rgba(0,0,0,0.3)'
     };
 

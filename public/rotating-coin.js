@@ -26,7 +26,6 @@
         face.style.borderRadius = '50%';
         face.style.overflow = 'hidden';
         face.style.backfaceVisibility = 'hidden';
-        face.style.WebkitBackfaceVisibility = 'hidden';
         face.style.boxShadow = '0 30px 80px rgba(0,0,0,0.25)';
         face.style.transform = transform;
 
