@@ -1,10 +1,10 @@
 import { analyzeAddress } from '../lib/analyze';
-import { updateLeaderboard } from '../lib/leaderboard.ts';
+import { updateLeaderboard } from '../lib/leaderboard';
 
 export interface ScanState {
   loading: boolean;
   error: string | null;
-  result: any | null;
+  result: unknown | null;
 }
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -64,7 +64,8 @@ export function useScanner() {
               name: result.name,
               symbol: result.symbol,
               logo: result.logo,
-              aegisScore: result.aegis.score
+              aegisScore: result.aegis.score,
+              type: 'token'
             });
           }
         } catch (error) {
