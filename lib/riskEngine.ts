@@ -9,10 +9,31 @@ export interface RiskData {
   volume24h?: number;
 }
 
+export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH';
+export type AlertLevel = 'critical' | 'warning' | 'info';
+
 export interface RiskResult {
-  level: 'LOW' | 'MEDIUM' | 'HIGH';
+  level: RiskLevel;
   score: number;
   reasons: string[];
+}
+
+/**
+ * Maps risk levels to alert severity levels for UI display
+ * LOW -> info, MEDIUM -> warning, HIGH -> critical
+ */
+export function mapRiskToAlertLevel(riskLevel: RiskLevel): AlertLevel {
+  switch (riskLevel) {
+    case 'LOW':
+      return 'info';
+    case 'MEDIUM':
+      return 'warning';
+    case 'HIGH':
+      return 'critical';
+    default:
+      const _exhaustive: never = riskLevel;
+      return _exhaustive;
+  }
 }
 
 const LIQUIDITY_THRESHOLD_LOW = 10000;

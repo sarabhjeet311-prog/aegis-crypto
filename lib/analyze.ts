@@ -1,6 +1,6 @@
 import { fetchAllData, CoinGeckoTokenData } from '../services/api';
 import { detectWhales } from './whale';
-import { calculateRisk } from './riskEngine';
+import { calculateRisk, mapRiskToAlertLevel } from './riskEngine';
 
 interface TradingSignal {
   action: 'BUY' | 'CAUTION' | 'AVOID';
@@ -115,13 +115,13 @@ export async function analyzeAddress(address: string): Promise<AnalysisResult | 
     const scoreColor = aegisScore >= 80 ? '#14F195' : aegisScore >= 50 ? '#F3BA2F' : '#FF3B30';
 
     const flags = riskAnalysis.reasons.map(reason => ({
-      severity: reason.includes('High') || reason.includes('Extremely') ? 'critical' : reason.includes('Low') ? 'warning' : 'info',
+      severity: mapRiskToAlertLevel(riskAnalysis.level),
       message: reason
     }));
 
     if (whaleActivity.detected) {
       flags.push({
-        severity: whaleActivity.level === 'HIGH' ? 'critical' : 'warning',
+        severity: mapRiskToAlertLevel(whaleActivity.level),
         message: `Whale activity detected: ${whaleActivity.transactions} large transactions`
       });
     }
