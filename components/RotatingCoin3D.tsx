@@ -61,7 +61,7 @@ const RotatingCoin3D: React.FC<RotatingCoin3DProps> = ({ size = 260 }) => {
             objectFit: 'contain',
             transform: `translateZ(${size * 0.05}px)`,
             backfaceVisibility: 'hidden',
-            webkitBackfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             borderRadius: '50%',
             display: 'block'
           }}
@@ -78,7 +78,7 @@ const RotatingCoin3D: React.FC<RotatingCoin3DProps> = ({ size = 260 }) => {
             objectFit: 'contain',
             transform: `rotateY(180deg) translateZ(${size * 0.05}px)`,
             backfaceVisibility: 'hidden',
-            webkitBackfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             borderRadius: '50%',
             display: 'block'
           }}
