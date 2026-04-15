@@ -139,7 +139,7 @@ export default function ScannerPage() {
                     disabled={loading}
                     className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-lg rounded-xl hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-xl"
                   >
-                    {loading ? 'Scanning...' : 'Scan Now ?'}
+                    {loading ? 'Scanning...' : 'Scan Now'}
                   </button>
                 </div>
 
