@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Leaderboard Test</title>
+    <style>
+        body { font-family: Inter, sans-serif; background: #060714; color: #E5E7EB; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .card { background: rgba(13,14,29,0.7); padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .btn { background: #627EEA; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .btn:hover { background: #4B6DD6; }
+        .stats { display: flex; gap: 20px; margin-bottom: 20px; }
+        .stat { background: rgba(26,27,46,0.5); padding: 15px; border-radius: 12px; text-align: center; }
+        .stat h4 { margin: 0 0 5px 0; color: #9CA3AF; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .stat .value { font-size: 24px; font-weight: 800; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 AEGIS Leaderboard - Final Test</h1>
+        
+        <div class="stats">
+            <div class="stat">
+                <h4>Total Tokens</h4>
+                <div class="value" id="totalTokens">0</div>
+            </div>
+            <div class="stat">
+                <h4>Top Score</h4>
+                <div class="value" id="topScore">0</div>
+            </div>
+            <div class="stat">
+                <h4>Last Updated</h4>
+                <div class="value" id="lastUpdated">Never</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Test Controls</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <button class="btn" onclick="testUpdate('Bitcoin')">Add Bitcoin</button>
+                <button class="btn" onclick="testUpdate('Ethereum')">Add Ethereum</button>
+                <button class="btn" onclick="testUpdate('Solana')">Add Solana</button>
+                <button class="btn" onclick="testUpdate('Polygon')">Add Polygon</button>
+                <button class="btn" onclick="testUpdate('Avalanche')">Add Avalanche</button>
+                <button class="btn" onclick="testUpdate('Binance Coin')">Add Binance Coin</button>
+                <button class="btn" onclick="testUpdate('Cardano')">Add Cardano</button>
+                <button class="btn" onclick="testUpdate('Polkadot')">Add Polkadot</button>
+                <button class="btn" onclick="testUpdate('Chainlink')">Add Chainlink</button>
+                <button class="btn" onclick="testUpdate('Uniswap')">Add Uniswap</button>
+                <button class="btn" onclick="clearLeaderboard()">Clear All</button>
+                <button class="btn" onclick="loadLeaderboard()">Load Data</button>
+                <button class="btn" onclick="exportData()">Export Data</button>
+                <button class="btn" onclick="importData()">Import Data</button>
+            </div>
+        </div>
+
+        <!-- Premium Top 3 Podium -->
+        <div class="card">
+            <h3>🏆 Premium Top 3 Podium</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                <!-- Silver (2nd Place) -->
+                <div id="silver-card" class="glass" style="background: rgba(26,27,46,0.5); border: 2px solid transparent; padding: 20px; text-align: center; border-radius: 16px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div style="margin-bottom: 15px;">
+                        <div style="width: 80px; height: 80px; margin: 0 auto 10px; background: linear-gradient(135deg, #C0C0C0, #A0A0A0); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px;">🥈</div>
+                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #C0C0C0, #808080); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -10px -10px 0 auto; font-size: 12px; color: white; border: 2px solid #fff;">2</div>
+                    </div>
+                    <h4 style="margin: 0 0 5px 0; font-size: 18px; color: #6B7280;">Silver Token</h4>
+                    <p style="margin: 0 0 10px 0; font-size: 14px; color: #9CA3AF;" id="silver-symbol">SYMBOL</p>
+                    <div style="font-size: 32px; font-weight: 800; color: #6B7280;" id="silver-score">0</div>
+                    <div style="margin-top: 10px; font-size: 12px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 1px;">SILVER</div>
+                </div>
+                
+                <!-- Gold (1st Place - Center Focus) -->
+                <div id="gold-card" class="glass" style="background: rgba(26,27,46,0.5); border: 2px solid transparent; padding: 24px; text-align: center; border-radius: 16px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div style="margin-bottom: 15px;">
+                        <div style="width: 96px; height: 96px; margin: 0 auto 10px; background: linear-gradient(135deg, #FFD700, #FFB800, #FFF3B0); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; animation: pulse-glow 2s ease-in-out infinite;">👑</div>
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #FFD700, #FF8C00); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -15px -15px 0 auto; font-size: 14px; color: #8B5C00; border: 3px solid #FFE480;">1</div>
+                    </div>
+                    <h4 style="margin: 0 0 5px 0; font-size: 20px; color: #8B5C00;">Gold Token</h4>
+                    <p style="margin: 0 0 10px 0; font-size: 14px; color: #9CA3AF;" id="gold-symbol">SYMBOL</p>
+                    <div style="font-size: 40px; font-weight: 800; color: #8B5C00;" id="gold-score">0</div>
+                    <div style="margin-top: 10px; font-size: 12px; color: #8B5C00; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">CHAMPION</div>
+                </div>
+                
+                <!-- Bronze (3rd Place) -->
+                <div id="bronze-card" class="glass" style="background: rgba(26,27,46,0.5); border: 2px solid transparent; padding: 20px; text-align: center; border-radius: 16px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div style="margin-bottom: 15px;">
+                        <div style="width: 80px; height: 80px; margin: 0 auto 10px; background: linear-gradient(135deg, #CD7F32, #B87333); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px;">🥉</div>
+                        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #CD7F32, #8B4513); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -10px -10px 0 auto; font-size: 12px; color: white; border: 2px solid #fff;">3</div>
+                    </div>
+                    <h4 style="margin: 0 0 5px 0; font-size: 18px; color: #6B7280;">Bronze Token</h4>
+                    <p style="margin: 0 0 10px 0; font-size: 14px; color: #9CA3AF;" id="bronze-symbol">SYMBOL</p>
+                    <div style="font-size: 32px; font-weight: 800; color: #6B7280;" id="bronze-score">0</div>
+                    <div style="margin-top: 10px; font-size: 12px; color: #9CA3AF; text-transform: uppercase; letter-spacing: 1px;">BRONZE</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rest of Rankings -->
+        <div class="card">
+            <h3>📊 Leaderboard (4-8)</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid rgba(255,255,255,0.1);">
+                            <th style="text-align: left; padding: 12px; color: #9CA3AF; font-weight: 600;">Rank</th>
+                            <th style="text-align: left; padding: 12px; color: #9CA3AF; font-weight: 600;">Token</th>
+                            <th style="text-align: right; padding: 12px; color: #9CA3AF; font-weight: 600;">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardTokens">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Raw Data View -->
+        <div class="card">
+            <h3>🔍 Raw Data</h3>
+            <pre id="rawData" style="background: #0D0E1D; padding: 15px; border-radius: 8px; overflow-x: auto; color: #E5E7EB;"></pre>
+        </div>
+    </div>
+
+    <style>
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        .glass {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .glass:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255,215,0,0.3);
+            box-shadow: 0 20px 50px rgba(255,215,0,0.2);
+        }
+    </style>
+
+    <script>
+        // Copy the exact leaderboard logic from the main app
+        let leaderboardData = [];
+
+        function loadLeaderboard() {
+            try {
+                const stored = sessionStorage.getItem('aegis_leaderboard');
+                if (stored) {
+                    leaderboardData = JSON.parse(stored);
+                }
+            } catch(e) {}
+            renderLeaderboard();
+            updateStats();
+        }
+
+        function saveLeaderboard() {
+            try {
+                sessionStorage.setItem('aegis_leaderboard', JSON.stringify(leaderboardData));
+            } catch(e) {}
+        }
+
+        function updateLeaderboard(tokenName) {
+            let coin = leaderboardData.find(c => c.name === tokenName);
+
+            if (coin) {
+                coin.score += 2;
+            } else {
+                leaderboardData.push({
+                    name: tokenName,
+                    symbol: tokenName.slice(0,3).toUpperCase(),
+                    score: 2,
+                    image: "/assets/default.png"
+                });
+            }
+
+            leaderboardData.sort((a,b) => b.score - a.score);
+            saveLeaderboard();
+            renderLeaderboard();
+            updateStats();
+        }
+
+        function renderLeaderboard() {
+            leaderboardData.sort((a,b) => b.score - a.score);
+
+            const top3 = leaderboardData.slice(0,3);
+            const rest = leaderboardData.slice(3,8);
+
+            renderTop3(top3);
+            renderRestList(rest);
+        }
+
+        function renderTop3(top3) {
+            const gold = top3[0] || { name: "Gold Token", symbol: "GLD", score: 0 };
+            document.getElementById('gold-name').textContent = gold.name;
+            document.getElementById('gold-symbol').textContent = gold.symbol;
+            document.getElementById('gold-score').textContent = gold.score;
+
+            const silver = top3[1] || { name: "Silver Token", symbol: "SLV", score: 0 };
+            document.getElementById('silver-name').textContent = silver.name;
+            document.getElementById('silver-symbol').textContent = silver.symbol;
+            document.getElementById('silver-score').textContent = silver.score;
+
+            const bronze = top3[2] || { name: "Bronze Token", symbol: "BRZ", score: 0 };
+            document.getElementById('bronze-name').textContent = bronze.name;
+            document.getElementById('bronze-symbol').textContent = bronze.symbol;
+            document.getElementById('bronze-score').textContent = bronze.score;
+            
+            // Trigger animations for top 3 cards
+            setTimeout(() => {
+                const goldCard = document.getElementById('gold-card');
+                const silverCard = document.getElementById('silver-card');
+                const bronzeCard = document.getElementById('bronze-card');
+                
+                goldCard.style.opacity = '1';
+                goldCard.style.transform = 'translateY(0)';
+                
+                silverCard.style.opacity = '1';
+                silverCard.style.transform = 'translateY(0)';
+                
+                bronzeCard.style.opacity = '1';
+                bronzeCard.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        function renderRestList(rest) {
+            const tbody = document.getElementById('leaderboardTokens');
+            tbody.innerHTML = '';
+
+            rest.forEach((coin, index) => {
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease;">
+                        <td style="padding: 12px; font-weight: 600;">${index + 4}</td>
+                        <td style="padding: 12px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, rgba(98,126,234,0.3), rgba(98,126,234,0.1)); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; color: white;">${coin.symbol}</div>
+                                <div>
+                                    <div style="font-weight: bold;">${coin.name}</div>
+                                    <div style="font-size: 12px; color: #9CA3AF;">${coin.symbol}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="padding: 12px; text-align: right; font-weight: bold; color: #14F195;">${coin.score}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('totalTokens').textContent = leaderboardData.length;
+            const topScore = leaderboardData.length > 0 ? Math.max(...leaderboardData.map(c => c.score)) : 0;
+            document.getElementById('topScore').textContent = topScore;
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+            document.getElementById('rawData').textContent = JSON.stringify(leaderboardData, null, 2);
+        }
+
+        function testUpdate(tokenName) {
+            updateLeaderboard(tokenName);
+        }
+
+        function clearLeaderboard() {
+            leaderboardData = [];
+            saveLeaderboard();
+            renderLeaderboard();
+            updateStats();
+        }
+
+        function exportData() {
+            const data = JSON.stringify(leaderboardData, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'aegis_leaderboard.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            leaderboardData = JSON.parse(e.target.result);
+                            saveLeaderboard();
+                            renderLeaderboard();
+                            updateStats();
+                        } catch (err) {
+                            alert('Invalid JSON file');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        // Load leaderboard on page load
+        loadLeaderboard();
+    </script>
+</body>
+</html>

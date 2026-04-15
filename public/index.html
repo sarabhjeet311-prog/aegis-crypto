@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS AI Shield | The Divine Shield of Wealth</title>
+    <meta name="description" content="AI-powered crypto threat intelligence and autonomous asset protection">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- ethers.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.9.0/ethers.umd.min.js"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#627EEA',
+                        secondary: '#F3BA2F',
+                        accent: '#14F195',
+                        background: '#060714',
+                        surface: '#0D0E1D',
+                        'surface-light': '#1A1B2E',
+                        text: '#E5E7EB',
+                        'text-muted': '#9CA3AF',
+                        danger: '#FF3B30',
+                        warning: '#F3BA2F',
+                        success: '#14F195'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'hero-glow': 'radial-gradient(ellipse at center, rgba(98,126,234,0.15) 0%, transparent 70%)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #060714;
+            color: #E5E7EB;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060714;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1A1B2E;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #627EEA;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(13, 14, 29, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-light {
+            background: rgba(26, 27, 46, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Glow Effects */
+        .glow-primary {
+            box-shadow: 0 0 40px rgba(98, 126, 234, 0.3);
+        }
+        
+        .glow-accent {
+            box-shadow: 0 0 30px rgba(20, 241, 149, 0.2);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #627EEA 0%, #14F195 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-text-gold {
+            background: linear-gradient(135deg, #F3BA2F 0%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes scan-line {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .animate-fade-in-up {
+            animation: fade-in-up 0.8s ease-out forwards;
+        }
+        
+        /* AEGIS Shield Animation */
+        .shield-container {
+            position: relative;
+            width: 200px;
+            height: 240px;
+        }
+        
+        .shield {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(98,126,234,0.2) 0%, rgba(20,241,149,0.1) 100%);
+            border: 2px solid rgba(98,126,234,0.5);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .shield::before {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            background: linear-gradient(135deg, rgba(98,126,234,0.1) 0%, rgba(20,241,149,0.05) 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            border: 1px solid rgba(20,241,149,0.3);
+        }
+        
+        .shield-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(20,241,149,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        /* Score Circle */
+        .score-circle {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+        
+        .score-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        
+        /* Ticker Animation */
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .ticker {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+        }
+        
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Card hover effects */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(98, 126, 234, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(98, 126, 234, 0.1);
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(98, 126, 234, 0.3);
+            border-top-color: #627EEA;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Grid background pattern */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(98,126,234,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(98,126,234,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Navbar blur on scroll */
+        .navbar-scrolled {
+            background: rgba(6, 7, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #627EEA 0%, #4B6DD6 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(98, 126, 234, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(98, 126, 234, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(98, 126, 234, 0.1);
+            border-color: #627EEA;
+        }
+        
+        /* Premium Leaderboard Animations */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255,215,0,0.3);
+            box-shadow: 0 20px 50px rgba(255,215,0,0.2), 0 0 30px rgba(255,215,0,0.3);
+        }
+        
+        .hover-lift:hover #gold-card {
+            box-shadow: 0 25px 60px rgba(255,215,0,0.4), 0 0 50px rgba(255,215,0,0.5);
+        }
+        
+        .hover-lift:hover #silver-card {
+            box-shadow: 0 20px 50px rgba(192,192,192,0.3), 0 0 40px rgba(192,192,192,0.4);
+        }
+        
+        .hover-lift:hover #bronze-card {
+            box-shadow: 0 20px 50px rgba(205,127,50,0.3), 0 0 40px rgba(205,127,50,0.4);
+        }
+        
+        /* Leaderboard row hover effects */
+        #leaderboardTokens tr:hover {
+            background: rgba(98,126,234,0.1);
+            transform: translateX(4px);
+            transition: all 0.3s ease;
+        }
+        
+        /* Gold text animation */
+        .gradient-text-gold {
+            background: linear-gradient(135deg, #FFD700, #FFB800, #FFF3B0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gold-shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes gold-shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Premium 3D Coin Container */
+        #aegis-coin-3d {
+            width: 420px;
+            height: 420px;
+            position: relative;
+            background: transparent !important;
+            overflow: visible !important;
+        }
+        
+        /* FORCE VISIBILITY (CSS FIX) */
+        #coin-container, #aegis-coin-3d {
+            width: 420px !important;
+            height: 420px !important;
+            position: relative !important;
+            z-index: 999 !important;
+            background: transparent !important;
+        }
+
+        #aegis-coin-3d canvas {
+            background: transparent !important;
+        }
+
+        canvas {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            background: transparent !important;
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen">
+    <!-- Background Glow -->
+    <div class="fixed inset-0 hero-glow pointer-events-none z-0"></div>
+    
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass rounded-2xl px-6 py-4 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 013 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">AEGIS</span>
+                </div>
+                
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#intelligence" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Intelligence</a>
+                    <a href="#scanner" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Scanner</a>
+                    <a href="#access" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Access</a>
+                    <a href="#protocol" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Protocol</a>
+                    <a href="#terminal" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Terminal</a>
+                </div>
+                
+                <!-- Connect Wallet Button -->
+                <button id="connectWallet" class="btn-primary px-6 py-2.5 rounded-xl text-white font-semibold text-sm flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    <span>Connect Wallet</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="relative z-10 pt-40 pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Left: Content -->
+                <div class="space-y-8 animate-fade-in-up">
+                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-light text-sm">
+                        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                        <span class="text-text-muted">AI Engine Operational</span>
+                    </div>
+                    
+                    <h1 class="text-5xl lg:text-7xl font-black leading-tight tracking-tight">
+                        The <span class="gradient-text">Divine Shield</span><br>of Wealth
+                    </h1>
+                    
+                   <p class="text-xl text-text-muted max-w-lg leading-relaxed">
+    AI-powered crypto intelligence system with token-gated access. 
+    Scan assets, detect hidden threats, and unlock advanced protection based on your AEGIS holdings.
+    The more you hold, the deeper the intelligence you control.
+</p>
+                    
+                    <!-- Scanner Input -->
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="flex-1 relative">
+                                <input 
+                                    type="text" 
+                                    id="scanInput"
+                                    placeholder="Enter token or wallet address..." 
+                                    class="w-full glass px-6 py-4 rounded-xl text-white placeholder-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-lg"
+                                >
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                                    <svg class="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <button id="scanBtn" class="btn-primary px-8 py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center space-x-2 whitespace-nowrap">
+                                <span>Scan Now</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Actions -->
+                        <div class="flex flex-wrap gap-3">
+                            <button class="glass-light px-4 py-2 rounded-lg text-sm text-text-muted hover:text-text transition-colors" onclick="fillExample('eth')">
+                                🪙 Demo Token
+                            </button>
+                            <button class="glass-light px-4 py-2 rounded-lg text-sm text-text-muted hover:text-text transition-colors" onclick="fillExample('0x742d35Cc6634C0532925a3b844Bc454e4438f44e')">
+                                💼 Example Wallet
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Forced Visible Scan Result -->
+                    <div id="scanResultCard" class="hidden glass rounded-2xl p-6 mt-6" style="position: relative; z-index: 9999; overflow: visible; background: #020617; border: 1px solid #1f2937; border-radius: 14px; color: #ffffff;">
+                        <div id="scanResultContent" style="display: block;
+                            position: relative;
+                            z-index: 9999;
+                            width: 100%;
+                            max-width: 100%;
+                        "></div>
+                    </div>
+
+                    <!-- Scanner Results -->
+                    <section id="scanner" class="relative z-10 mt-6" style="overflow: visible; min-height: auto; position: relative; z-index: 9999;">
+                        <div class="glass rounded-3xl p-6 lg:p-8" style="overflow: visible; min-height: auto; position: relative; z-index: 9999;">
+                            <!-- Loading State -->
+                            <div id="loadingState" class="hidden flex flex-col items-center justify-center py-10">
+                                <div class="spinner mb-6"></div>
+                                <p class="text-text-muted text-lg">Analyzing on-chain data, liquidity depth and wallet behavior...</p>
+                            </div>
+
+                            <!-- Results -->
+                            <div id="scanResults" class="hidden">
+                                <div class="grid lg:grid-cols-3 gap-12">
+                                    <!-- Score Display -->
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="score-circle mb-6">
+                                            <svg width="160" height="160" viewBox="0 0 160 160">
+                                                <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                                                <circle id="scoreCircle" cx="80" cy="80" r="70" fill="none" stroke="#14F195" stroke-width="8" stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="round" style="transition: stroke-dashoffset 1.5s ease-out;"/>
+                                            </svg>
+                                            <div class="score-value">
+                                                <span id="scoreValue" class="text-white">0</span>
+                                                <span class="text-sm text-text-muted block">AEGIS</span>
+                                            </div>
+                                        </div>
+                                        <div id="riskLevel" class="text-2xl font-bold mb-2">ANALYZING</div>
+                                        <p id="riskDescription" class="text-text-muted text-center">Processing security data...</p>
+                                    </div>
+
+                                    <!-- Token Info -->
+                                    <div class="lg:col-span-2 space-y-6">
+                                        <div class="glass-light rounded-2xl p-6">
+                                            <h3 class="text-lg font-bold mb-4 flex items-center space-x-2">
+                                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                <span>Token Information</span>
+                                            </h3>
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <p class="text-sm text-text-muted">Name</p>
+                                                    <p id="tokenName" class="font-semibold">—</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-text-muted">Symbol</p>
+                                                    <p id="tokenSymbol" class="font-semibold">—</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-text-muted">Price (USD)</p>
+                                                    <p id="tokenPrice" class="font-semibold">—</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-text-muted">Liquidity</p>
+                                                    <p id="tokenLiquidity" class="font-semibold">—</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-text-muted">24h Volume</p>
+                                                    <p id="tokenVolume" class="font-semibold">—</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-text-muted">24h Change</p>
+                                                    <p id="tokenChange" class="font-semibold">—</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Security Flags -->
+                                        <div class="glass-light rounded-2xl p-6">
+                                            <h3 class="text-lg font-bold mb-4 flex items-center space-x-2">
+                                                <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                                </svg>
+                                                <span>Security Analysis</span>
+                                            </h3>
+                                            <div id="securityFlags" class="space-y-3"></div>
+                                        </div>
+                                        
+                                        <!-- Decision -->
+                                        <div id="decisionBox" class="rounded-2xl p-6 text-center">
+                                            <p class="text-lg font-bold mb-2" id="decisionText">AWAITING SCAN</p>
+                                            <p class="text-text-muted" id="decisionSubtext">Enter a token or wallet address to begin analysis</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Stats Ticker -->
+                    <div class="pt-8 border-t border-white/5">
+                        <div class="ticker-wrap">
+                            <div class="ticker flex items-center space-x-12">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-2xl font-bold text-white" id="statThreats">12,847</span>
+                                    <span class="text-sm text-text-muted">Signals Generated</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-2xl font-bold text-white" id="statWallets">284,521</span>
+                                    <span class="text-sm text-text-muted">Wallet Intelligence Tracked</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-2xl font-bold text-white" id="statContracts">3,421</span>
+                                    <span class="text-sm text-text-muted">High-Risk Contracts Flagged</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-2xl font-bold text-accent" id="statConfidence">94.7%</span>
+                                    <span class="text-sm text-text-muted">AI Prediction Accuracy</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-2xl font-bold text-white">12,847</span>
+                                    <span class="text-sm text-text-muted">Threats Neutralized</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-2xl font-bold text-white">284,521</span>
+                                    <span class="text-sm text-text-muted">Wallets Monitored</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Premium 3D Coin Visual -->
+                <div class="flex justify-center lg:justify-end animate-float">
+                    <div id="coin-container" class="coin-3d-container" data-size="400"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Trust Grid -->
+    <section id="intelligence" class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass rounded-2xl p-6 card-hover">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium text-text-muted">AI Engine</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                        <span class="text-lg font-bold text-white">Operational</span>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 card-hover">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium text-text-muted">Monitoring</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                        <span class="text-lg font-bold text-white">Real-Time</span>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 card-hover">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium text-text-muted">Threat Detection</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                        <span class="text-lg font-bold text-white">Active</span>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 card-hover">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-danger/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium text-text-muted">Intelligence</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                        <span class="text-lg font-bold text-secondary">Restricted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About AEGIS -->
+    <section class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-black mb-6">
+                    <span class="gradient-text">Autonomous Defense</span><br>Powered by AI
+                </h2>
+                <p class="text-xl text-text-muted max-w-2xl mx-auto">
+AEGIS is not just a scanner — it is a tiered intelligence system.
+                    Your access level is determined by your token holdings, unlocking deeper analytics,
+                    faster signals, and private data streams used by advanced traders.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Contract Scanning</h3>
+                    <p class="text-text-muted">Basic scans for public users. Advanced holders unlock deep contract intelligence,
+including hidden mint risks, liquidity traps, and exploit vectors.</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Wallet Analysis</h3>
+                    <p class="text-text-muted">Detects wallet risk patterns, tracking transaction history and behavioral anomalies.</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary/30 to-secondary/10 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Market Monitoring</h3>
+                    <p class="text-text-muted">Monitors market anomalies, whale movements, and liquidity changes in real-time.</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-danger/30 to-danger/10 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Auto Defense</h3>
+                    <p class="text-text-muted">Prevents malicious execution by blocking transactions with flagged contracts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <section class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Premium Header -->
+            <div class="text-center mb-8">
+                <h2 class="text-5xl lg:text-6xl font-black mb-4 animate-fade-in-up">
+                    <span class="gradient-text-gold">🏆 Leaderboard</span>
+                </h2>
+                <p class="text-xl text-text-muted mb-3 animate-fade-in-up" style="animation-delay: 0.1s">
+                    Top scanned tokens ranked by AEGIS activity
+                </p>
+                <p class="text-sm text-text-muted animate-fade-in-up" style="animation-delay: 0.2s">
+                    Each scan adds +2 points. Tokens with highest activity rank at the top.
+                </p>
+            </div>
+            
+            <!-- Top 3 Featured Tokens -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Rank 2 - Silver (Left) -->
+                <div id="rank2-card" class="featured-card glass rounded-2xl p-8 border-2 border-transparent hover-lift" style="box-shadow: 0 0 25px rgba(192,192,192,0.1);">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center mb-4 shadow-lg">
+                            <span class="text-2xl">🥈</span>
+                        </div>
+                        <div class="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center mb-6 shadow-lg border-2 border-gray-200">
+                            <span class="text-sm font-bold text-white">2</span>
+                        </div>
+                        
+                        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center mb-4 shadow-lg border-2 border-gray-300">
+                            <span class="text-4xl">⚡</span>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" id="rank2-name">Silver Token</h3>
+                        <div class="flex items-center justify-center space-x-2 mb-4">
+                            <span class="text-sm text-text-muted font-mono" id="rank2-address">0x123...abcd</span>
+                            <button class="copy-btn text-text-muted hover:text-text transition-colors" onclick="copyAddress('rank2-address')" title="Copy Address">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="text-4xl font-black text-gray-700 mb-2" id="rank2-score">0</div>
+                        <div class="text-xs text-text-muted uppercase tracking-wider">SILVER</div>
+                    </div>
+                </div>
+                
+                <!-- Rank 1 - Gold (Center - Featured) -->
+                <div id="rank1-card" class="featured-card glass rounded-2xl p-10 border-2 border-transparent hover-lift scale-110" style="box-shadow: 0 0 50px rgba(255,215,0,0.3);">
+                    <div class="text-center">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 flex items-center justify-center mb-4 shadow-2xl animate-pulse-glow">
+                            <span class="text-5xl">👑</span>
+                        </div>
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mb-6 shadow-lg border-2 border-yellow-200">
+                            <span class="text-sm font-bold text-yellow-900">1</span>
+                        </div>
+                        
+                        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center mb-4 shadow-lg border-4 border-yellow-200">
+                            <span class="text-5xl">💎</span>
+                        </div>
+                        
+                        <h3 class="text-3xl font-black text-yellow-900 mb-2" id="rank1-name">Gold Token</h3>
+                        <div class="flex items-center justify-center space-x-2 mb-4">
+                            <span class="text-sm text-text-muted font-mono" id="rank1-address">0x123...abcd</span>
+                            <button class="copy-btn text-text-muted hover:text-text transition-colors" onclick="copyAddress('rank1-address')" title="Copy Address">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="text-6xl font-black text-yellow-800 mb-2" id="rank1-score">0</div>
+                        <div class="text-xs text-yellow-600 uppercase tracking-wider font-bold">CHAMPION</div>
+                    </div>
+                </div>
+                
+                <!-- Rank 3 - Bronze (Right) -->
+                <div id="rank3-card" class="featured-card glass rounded-2xl p-8 border-2 border-transparent hover-lift" style="box-shadow: 0 0 25px rgba(205,127,50,0.1);">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-4 shadow-lg">
+                            <span class="text-2xl">🥉</span>
+                        </div>
+                        <div class="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-orange-400 to-orange-700 flex items-center justify-center mb-6 shadow-lg border-2 border-orange-200">
+                            <span class="text-sm font-bold text-white">3</span>
+                        </div>
+                        
+                        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-orange-300 to-orange-500 flex items-center justify-center mb-4 shadow-lg border-2 border-orange-300">
+                            <span class="text-4xl">🔥</span>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-orange-800 mb-2" id="rank3-name">Bronze Token</h3>
+                        <div class="flex items-center justify-center space-x-2 mb-4">
+                            <span class="text-sm text-text-muted font-mono" id="rank3-address">0x123...abcd</span>
+                            <button class="copy-btn text-text-muted hover:text-text transition-colors" onclick="copyAddress('rank3-address')" title="Copy Address">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="text-4xl font-black text-orange-700 mb-2" id="rank3-score">0</div>
+                        <div class="text-xs text-orange-600 uppercase tracking-wider">BRONZE</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Remaining Tokens List -->
+            <div class="glass rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-white/10">
+                                <th class="text-left py-4 px-6 text-sm font-medium text-text-muted">Rank</th>
+                                <th class="text-left py-4 px-6 text-sm font-medium text-text-muted">Token</th>
+                                <th class="text-left py-4 px-6 text-sm font-medium text-text-muted">Address</th>
+                                <th class="text-right py-4 px-6 text-sm font-medium text-text-muted">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardTokens">
+                            <!-- Leaderboard entries will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Locked Intelligence (VIP) -->
+    <section id="access" class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-3xl p-12 lg:p-16 text-center relative overflow-hidden">
+                <!-- Background decoration -->
+                <div class="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-secondary/20 text-secondary text-sm font-medium mb-6">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Token-Gated Access</span>
+                    </div>
+                    
+                    <h2 class="text-4xl lg:text-5xl font-black mb-6">
+                        <span class="gradient-text-gold">Locked Intelligence</span>
+                    </h2>
+                    
+                    <p class="text-xl text-text-muted max-w-2xl mx-auto mb-8">
+Access restricted to holders of <span class="text-secondary font-bold">40,000 AEGIS tokens</span>.
+Unlock private intelligence, early signals, real-time alerts, and controlled execution advantages.
+                    </p>
+                    
+                    <!-- VIP Features Grid -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+                        <div class="glass-light rounded-xl p-6 text-left">
+                            <div class="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center mb-4">
+                                <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </div>
+                            <h4 class="font-bold mb-2">Whale Tracking</h4>
+                            <p class="text-sm text-text-muted">Real-time monitoring of large wallet movements</p>
+                        </div>
+                        
+                        <div class="glass-light rounded-xl p-6 text-left">
+                            <div class="w-10 h-10 rounded-lg bg-danger/20 flex items-center justify-center mb-4">
+                                <svg class="w-5 h-5 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                            </div>
+                            <h4 class="font-bold mb-2">Exit Alerts</h4>
+                            <p class="text-sm text-text-muted">Instant notifications on suspicious activity</p>
+                        </div>
+                        
+                        <div class="glass-light rounded-xl p-6 text-left">
+                            <div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center mb-4">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                </svg>
+                            </div>
+                            <h4 class="font-bold mb-2">Deep Contract Audit</h4>
+                            <p class="text-sm text-text-muted">Comprehensive security analysis</p>
+                        </div>
+                        
+                        <div class="glass-light rounded-xl p-6 text-left">
+                            <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center mb-4">
+                                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                            </div>
+                            <h4 class="font-bold mb-2">Behavioral Wallet AI</h4>
+                            <p class="text-sm text-text-muted">Pattern recognition for wallet behavior</p>
+                        </div>
+                        
+                        <div class="glass-light rounded-xl p-6 text-left">
+                            <div class="w-10 h-10 rounded-lg bg-secondary/20 flex items-center justify-center mb-4">
+                                <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <h4 class="font-bold mb-2">Smart Money Tracking</h4>
+                            <p class="text-sm text-text-muted">Follow profitable wallet strategies and detect arbitrage opportunities (available for 40K holders, 4 checks/week)</p>
+                        </div>
+                        
+                        <div class="glass-light rounded-xl p-6 text-left">
+                            <div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center mb-4">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <h4 class="font-bold mb-2">Priority Processing</h4>
+                            <p class="text-sm text-text-muted">Faster scan times and API access</p>
+                        </div>
+                    </div>
+                    
+                    <!-- VIP Check -->
+                    <div class="max-w-md mx-auto">
+                        <div class="flex gap-4">
+                            <input 
+                                type="text" 
+                                id="vipInput"
+                                placeholder="Enter your wallet address" 
+                                class="flex-1 glass px-6 py-4 rounded-xl text-white placeholder-text-muted focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all"
+                            >
+                            <button onclick="checkVIP()" class="btn-outline px-6 py-4 rounded-xl text-secondary font-semibold border-secondary hover:bg-secondary/10">
+                                Check
+                            </button>
+                        </div>
+                        <div id="vipResult" class="mt-4 hidden">
+                            <!-- VIP result will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Token Access Section -->
+    <section id="protocol" class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                   <h2 class="text-4xl lg:text-5xl font-black mb-6">
+    Access is not purchased.<br>
+    <span class="gradient-text">It is controlled.</span>
+</h2>
+
+<p class="text-xl text-text-muted mb-8">
+    AEGIS is not a token. It is a gatekeeper to intelligence infrastructure.
+    Holders operate with early signals, protected execution, and asymmetric advantage.
+</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Priority AI Processing</h4>
+                                <p class="text-text-muted text-sm">Your scans are processed first in the queue</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Private Intelligence Feeds</h4>
+                                <p class="text-text-muted text-sm">Exclusive data streams not available to public</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Early Threat Detection</h4>
+                                <p class="text-text-muted text-sm">Get alerts before threats go public</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Real-time Alert Routing</h4>
+                                <p class="text-text-muted text-sm">Direct notifications to your devices</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Deep Analytics Access</h4>
+                                <p class="text-text-muted text-sm">Full historical data and advanced metrics</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <a href="#" class="btn-primary inline-flex items-center space-x-2 px-8 py-4 rounded-xl text-white font-semibold text-lg">
+                            <span>Acquire AEGIS</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="glass rounded-3xl p-8 lg:p-12">
+                        <div class="text-center">
+                            <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-secondary/30 to-secondary/10 flex items-center justify-center mb-6">
+                                <svg class="w-12 h-12 text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Token-Gated Access</h3>
+                            <p class="text-text-muted mb-6">Hold 40,000 AEGIS to unlock premium features</p>
+                            
+                            <div class="glass-light rounded-2xl p-6 mb-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-text-muted">Required</span>
+                                    <span class="text-2xl font-bold text-secondary">40,000 AEGIS</span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-secondary to-accent h-2 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-text-muted"></p>
+                                Access is not purchased. It is held.<br>
+                                Maintain your balance to retain privileges.<br>
+                                40K holders unlock arbitrage system access (limited to 4 checks per week).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Telegram Terminal -->
+    <section id="terminal" class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-3xl p-12 lg:p-16">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-primary/20 text-primary text-sm font-medium mb-6">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>
+                                <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/>
+                            </svg>
+                            <span>Command Terminal</span>
+                        </div>
+                        
+                        <h2 class="text-4xl lg:text-5xl font-black mb-6">
+                            AEGIS Command<br><span class="gradient-text">Terminal</span>
+                        </h2>
+                        
+                        <p class="text-xl text-text-muted mb-8">
+                            Connect directly to AEGIS through our Telegram bot. 
+                            Get instant alerts, run scans, and track whales — all from your messenger.
+                        </p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-mono text-sm">/scan</span>
+                                <span class="text-text-muted">Scan any token or wallet</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-mono text-sm">/alerts</span>
+                                <span class="text-text-muted">Get latest threat alerts</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-mono text-sm">/whale</span>
+                                <span class="text-text-muted">Track whale movements</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-mono text-sm">/vip</span>
+                                <span class="text-text-muted">Check your VIP status</span>
+                            </div>
+                        </div>
+                        
+                        <a href="https://t.me/AEGISBot" target="_blank" class="btn-primary inline-flex items-center space-x-2 px-8 py-4 rounded-xl text-white font-semibold text-lg">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                            </svg>
+                            <span>Access Telegram Intelligence</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Terminal Visual -->
+                    <div class="bg-black/50 rounded-2xl p-6 font-mono text-sm overflow-hidden">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div class="w-3 h-3 rounded-full bg-danger"></div>
+                            <div class="w-3 h-3 rounded-full bg-warning"></div>
+                            <div class="w-3 h-3 rounded-full bg-accent"></div>
+                        </div>
+                        <div class="space-y-2 text-text-muted">
+                            <p><span class="text-accent">$</span> /start</p>
+                            <p class="text-text">🛡️ <strong>AEGIS AI Shield</strong></p>
+                            <p class="text-text">Welcome to the Command Terminal.</p>
+                            <p class="text-text-muted">Use /help to see available commands.</p>
+                            <p class="text-text"> </p>
+                            <p><span class="text-accent">$</span> /scan 0x627EEA...</p>
+                            <p class="text-text">🔍 Scanning token...</p>
+                            <p class="text-accent">✅ AEGIS Score: 92/100</p>
+                            <p class="text-text-muted">Status: SAFE</p>
+                            <p class="text-text-muted">Liquidity: $1.2M</p>
+                            <p class="text-text-muted">Holders: 8,421</p>
+                            <p class="text-text"> </p>
+                            <p><span class="text-accent">$</span> /whale</p>
+                            <p class="text-warning">🐋 Whale Alert Detected!</p>
+                            <p class="text-text-muted">2,500 ETH ($8.2M) moved</p>
+                            <p class="text-text-muted">From: 0x742d35Cc...</p>
+                            <p class="text-text-muted">To: Unknown Wallet</p>
+                            <p class="text-text"> </p>
+                            <p><span class="text-accent">$</span> <span class="animate-pulse">_</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Technology Stack -->
+    <section class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-black text-center mb-12">Technology Stack</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="glass rounded-xl p-6 text-center card-hover">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-primary/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-sm">AI Engine</h4>
+                </div>
+                
+                <div class="glass rounded-xl p-6 text-center card-hover">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-accent/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-sm">Real-Time Monitoring</h4>
+                </div>
+                
+                <div class="glass rounded-xl p-6 text-center card-hover">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-secondary/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-sm">Quantum Encryption</h4>
+                </div>
+                
+                <div class="glass rounded-xl p-6 text-center card-hover">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-danger/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-sm">Transaction Scanner</h4>
+                </div>
+                
+                <div class="glass rounded-xl p-6 text-center card-hover">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-primary/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 013 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-sm">Auto Defense</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Origin Section -->
+    <section class="relative z-10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-3xl p-12 lg:p-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black mb-4">Origin</h2>
+                    <p class="text-text-muted">Built at the intersection of Eastern precision and Western innovation</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="glass-light rounded-2xl p-8">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <span class="text-2xl">🇯🇵</span>
+                            <h3 class="text-xl font-bold">Tokyo Lab</h3>
+                        </div>
+                        <p class="text-text-muted mb-6">
+                            Advanced AI research and threat detection algorithms developed in our Tokyo research facility.
+                        </p>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                                <span class="text-sm font-bold">KT</span>
+                            </div>
+                            <div>
+                                <p class="font-bold">Kenji Tanaka</p>
+                                <p class="text-sm text-text-muted">CEO & Founder</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-light rounded-2xl p-8">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <span class="text-2xl">🇦🇪</span>
+                            <h3 class="text-xl font-bold">Dubai HQ</h3>
+                        </div>
+                        <p class="text-text-muted mb-6">
+                            Global operations and strategic partnerships managed from our Dubai headquarters.
+                        </p>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
+                                <span class="text-sm font-bold">FA</span>
+                            </div>
+                            <div>
+                                <p class="font-bold">Fatima Al-Mansoori</p>
+                                <p class="text-sm text-text-muted">Lead Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section class="relative z-10 py-32 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-5xl lg:text-7xl font-black mb-8 leading-tight">
+                Most react to the market.<br>
+                <span class="gradient-text">A few see it before it moves.</span>
+            </h2>
+            
+            <p class="text-xl text-text-muted mb-12 max-w-2xl mx-auto">
+                AEGIS was built for the latter.<br>
+                Access is limited. Intelligence is controlled.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="document.getElementById('scanInput').focus()" class="btn-primary px-10 py-5 rounded-xl text-white font-semibold text-xl flex items-center justify-center space-x-2">
+                    <span>Enter the System</span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </button>
+                
+                <a href="https://t.me/AEGISBot" target="_blank" class="btn-outline px-10 py-5 rounded-xl text-white font-semibold text-xl border-white/20 hover:border-white/40">
+                    Telegram Bot
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="relative z-10 py-12 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="font-bold">AEGIS</span>
+                </div>
+                
+                <div class="flex items-center space-x-6 text-sm text-text-muted">
+                    <a href="#" class="hover:text-text transition-colors">Documentation</a>
+                    <a href="#" class="hover:text-text transition-colors">API</a>
+                    <a href="#" class="hover:text-text transition-colors">Terms</a>
+                    <a href="#" class="hover:text-text transition-colors">Privacy</a>
+                </div>
+                
+                <p class="text-sm text-text-muted">© 2024 AEGIS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Audio for alerts -->
+    <audio id="alertSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

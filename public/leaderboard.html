@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AEGIS Leaderboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #050816;
+  color: white;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.container {
+  padding: 50px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #627EEA 0%, #14F195 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.description {
+  color: #9CA3AF;
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.top3 {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 60px 0;
+  align-items: flex-end;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 20px;
+  width: 180px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.first { 
+  height: 280px; 
+  border: 2px solid gold;
+  box-shadow: 0 0 30px rgba(255,215,0,0.2);
+}
+.second { 
+  height: 240px;
+  border: 1px solid #C0C0C0;
+}
+.third { 
+  height: 210px;
+  border: 1px solid #CD7F32;
+}
+
+.card .rank-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  word-break: break-all;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #14F195;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin: 40px 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  margin: 8px auto;
+  max-width: 700px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.2s ease;
+}
+
+.row:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.row .rank {
+  color: #9CA3AF;
+  font-weight: bold;
+  min-width: 40px;
+}
+
+.row .token-name {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+.row .points {
+  color: #14F195;
+  font-weight: bold;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #627EEA 0%, #4B6DD6 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(98, 126, 234, 0.4);
+}
+
+.empty-state {
+  color: #9CA3AF;
+  padding: 40px;
+  font-size: 1.1rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🏆 AEGIS Leaderboard</h1>
+
+  <p class="description">
+    Tokens gain points every time they are scanned.  
+    This shows what users are actively checking right now.
+  </p>
+
+  <!-- TOP 3 -->
+  <div class="top3">
+    <div class="card second" id="rank2"></div>
+    <div class="card first" id="rank1"></div>
+    <div class="card third" id="rank3"></div>
+  </div>
+
+  <h2 class="section-title">🔥 Trending</h2>
+  <div id="trending"></div>
+
+  <h2 class="section-title">📊 All Tokens</h2>
+  <div id="list"></div>
+
+  <a href="index.html" class="back-link">← Back to Scanner</a>
+</div>
+
+<script>
+// Get leaderboard data from sessionStorage
+let leaderboard = {};
+try {
+  const stored = sessionStorage.getItem('aegis_leaderboard');
+  if (stored) {
+    leaderboard = JSON.parse(stored);
+  }
+} catch(e) {}
+
+render();
+
+// Refresh every 5 seconds
+setInterval(render, 5000);
+
+function render() {
+  const sorted = Object.entries(leaderboard)
+    .sort((a,b) => b[1] - a[1]);
+
+  if (sorted.length === 0) {
+    document.getElementById("trending").innerHTML = '<div class="empty-state">No scans yet. Be the first to scan a token!</div>';
+    document.getElementById("list").innerHTML = '<div class="empty-state">No data available</div>';
+    return;
+  }
+
+  // TOP 3
+  setTop("rank1", sorted[0], "👑");
+  setTop("rank2", sorted[1], "🥈");
+  setTop("rank3", sorted[2], "🥉");
+
+  // TRENDING (top 5)
+  let trendingHTML = "";
+  sorted.slice(0, 5).forEach((t, i) => {
+    trendingHTML += `
+      <div class="row">
+        <span class="rank">#${i + 1}</span>
+        <span class="token-name">${t[0]}</span>
+        <span class="points">🔥 ${t[1]} pts</span>
+      </div>
+    `;
+  });
+  document.getElementById("trending").innerHTML = trendingHTML;
+
+  // FULL LIST
+  let listHTML = "";
+  sorted.forEach((t, i) => {
+    listHTML += `
+      <div class="row">
+        <span class="rank">#${i + 1}</span>
+        <span class="token-name">${t[0]}</span>
+        <span class="points">${t[1]} pts</span>
+      </div>
+    `;
+  });
+  document.getElementById("list").innerHTML = listHTML;
+}
+
+function setTop(id, data, icon) {
+  if (!data) {
+    document.getElementById(id).innerHTML = `<div class="rank-icon">${icon}</div><h3>—</h3><p>0 pts</p>`;
+    return;
+  }
+  document.getElementById(id).innerHTML = `
+    <div class="rank-icon">${icon}</div>
+    <h3>${data[0]}</h3>
+    <p>${data[1]} pts</p>
+  `;
+}
+</script>
+
+</body>
+</html>

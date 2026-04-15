@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS Crypto - 3D Rotating Coin Hero</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#627EEA',
+                        secondary: '#F3BA2F',
+                        accent: '#14F195',
+                        background: '#060714',
+                        surface: '#0D0E1D',
+                        'surface-light': '#1A1B2E',
+                        text: '#E5E7EB',
+                        'text-muted': '#9CA3AF',
+                        danger: '#FF3B30',
+                        warning: '#F3BA2F',
+                        success: '#14F195'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'hero-glow': 'radial-gradient(ellipse at center, rgba(98,126,234,0.15) 0%, transparent 70%)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #060714;
+            color: #E5E7EB;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Background Glow */
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(98,126,234,0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(13, 14, 29, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-light {
+            background: rgba(26, 27, 46, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #627EEA 0%, #14F195 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #627EEA 0%, #4B6DD6 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(98, 126, 234, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(98, 126, 234, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(98, 126, 234, 0.1);
+            border-color: #627EEA;
+        }
+        
+        /* Input styles */
+        .input-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .input-glass:focus {
+            outline: none;
+            border-color: #627EEA;
+            box-shadow: 0 0 0 3px rgba(98, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Grid background pattern */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(98,126,234,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(98,126,234,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Fade in up */
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fade-in-up 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen">
+    <!-- Background Glow -->
+    <div class="hero-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 py-4">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass rounded-2xl px-6 py-4 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 013 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">AEGIS</span>
+                </div>
+                
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Home</a>
+                    <a href="#" class="text-text-muted hover:text-text transition-colors text-sm font-medium">About</a>
+                    <a href="#" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Features</a>
+                    <a href="#" class="text-text-muted hover:text-text transition-colors text-sm font-medium">Contact</a>
+                </div>
+                
+                <!-- CTA Button -->
+                <button class="btn-primary px-6 py-2.5 rounded-xl text-white font-semibold text-sm">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <!-- Left: Content -->
+            <div class="hero-text animate-fade-in-up">
+                <h1 class="hero-title">
+                    The Divine Shield<br>of Wealth
+                </h1>
+                
+                <p class="hero-subtitle">
+                    AI-powered crypto intelligence system with advanced 3D visualization. 
+                    Experience the future of digital asset protection with our premium rotating coin animation.
+                </p>
+                
+                <!-- Scanner Input -->
+                <div class="hero-actions">
+                    <div class="hero-input">
+                        <input 
+                            id="scanInput"
+                            type="text" 
+                            placeholder="Enter token or wallet address..." 
+                            class="input-glass w-full px-6 py-4 rounded-xl text-white placeholder-text-muted focus:outline-none text-lg"
+                        >
+                    </div>
+                    <button id="scanButton" type="button" class="btn-primary px-8 py-4 rounded-xl text-white font-semibold text-lg flex items-center justify-center space-x-2">
+                        <span id="scanButtonText">Scan Now →</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="flex flex-wrap gap-3">
+                    <button class="glass-light px-4 py-2 rounded-lg text-sm text-text-muted hover:text-text transition-colors" onclick="fillExample('0x627EEA')">
+                        🎯 Example Token
+                    </button>
+                    <button class="glass-light px-4 py-2 rounded-lg text-sm text-text-muted hover:text-text transition-colors" onclick="fillExample('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045')">
+                        💼 Example Wallet
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right: 3D Rotating Coin -->
+            <div class="flex justify-center lg:justify-end animate-float">
+                <div class="rotating-coin-target" data-size="400"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Additional Features Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-black mb-6">
+                    <span class="gradient-text">Advanced Features</span>
+                </h2>
+                <p class="text-xl text-text-muted max-w-2xl mx-auto">
+                    Experience cutting-edge technology with our premium 3D animations and AI-powered security analysis.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">3D Visualization</h3>
+                    <p class="text-text-muted">Immersive 3D coin animations with realistic lighting and shadow effects.</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Security</h3>
+                    <p class="text-text-muted">Advanced AI algorithms detect threats and provide real-time security analysis.</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary/30 to-secondary/10 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Real-time Monitoring</h3>
+                    <p class="text-text-muted">Continuous monitoring of market conditions and wallet security status.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-white/10">
+        <div class="max-w-7xl mx-auto text-center text-text-muted">
+            <p>&copy; 2024 AEGIS. All rights reserved. Built with cutting-edge 3D technology.</p>
+        </div>
+    </footer>
+    
+    <!-- Include the Rotating Coin Script -->
+    <script src="rotating-coin.js"></script>
+    
+    <!-- Scan Engine and Leaderboard Modules -->
+    <script type="module">
+        import { analyzeToken } from '/lib/scanEngine.js';
+        import { updateLeaderboard } from '/lib/leaderboard.js';
+
+        // State
+        let inputValue = '';
+        let scanResult = null;
+        let loading = false;
+
+        // DOM Elements
+        const scanInput = document.getElementById('scanInput');
+        const scanButton = document.getElementById('scanButton');
+        const scanButtonText = document.getElementById('scanButtonText');
+
+        // Update input value on change
+        scanInput.addEventListener('input', (e) => {
+            inputValue = e.target.value;
+        });
+
+        // Handle scan button click
+        scanButton.addEventListener('click', handleScan);
+
+        // Handle Enter key in input
+        scanInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleScan();
+            }
+        });
+
+        async function handleScan() {
+            if (!inputValue.trim()) {
+                console.warn('Please enter a token or wallet address');
+                return;
+            }
+
+            try {
+                setLoading(true);
+                console.log('Scanning:', inputValue);
+
+                const result = await analyzeToken(inputValue);
+                console.log('SCAN RESULT:', result);
+
+                scanResult = result;
+                displayResult(result);
+                updateLeaderboard(result.symbol);
+
+            } catch (err) {
+                console.error('Scan error:', err);
+                displayError('Scan failed. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function setLoading(isLoading) {
+            loading = isLoading;
+            if (isLoading) {
+                scanButtonText.textContent = 'Scanning...';
+                scanButton.disabled = true;
+                scanButton.style.opacity = '0.7';
+            } else {
+                scanButtonText.textContent = 'Scan Now →';
+                scanButton.disabled = false;
+                scanButton.style.opacity = '1';
+            }
+        }
+
+        function displayResult(result) {
+            // Remove existing result if any
+            const existingResult = document.getElementById('scanResultContainer');
+            if (existingResult) {
+                existingResult.remove();
+            }
+
+            // Create result container
+            const resultContainer = document.createElement('div');
+            resultContainer.id = 'scanResultContainer';
+            resultContainer.className = 'animate-fade-in-up';
+            resultContainer.style.cssText = `
+                margin-top: 20px;
+                padding: 20px;
+                background: rgba(13, 14, 29, 0.8);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(98, 126, 234, 0.3);
+                border-radius: 12px;
+                color: white;
+            `;
+
+            // Determine risk color
+            const riskColors = {
+                'Low': '#14F195',
+                'Medium': '#F3BA2F',
+                'High': '#FF3B30'
+            };
+            const riskColor = riskColors[result.riskLevel] || '#E5E7EB';
+
+            resultContainer.innerHTML = `
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">
+                            ${result.name} (${result.symbol})
+                        </h3>
+                        <p style="color: #9CA3AF; font-size: 0.875rem;">Token Analysis Complete</p>
+                    </div>
+                    <div style="
+                        padding: 8px 16px;
+                        background: ${riskColor}20;
+                        border: 1px solid ${riskColor};
+                        border-radius: 8px;
+                        color: ${riskColor};
+                        font-weight: 600;
+                        font-size: 0.875rem;
+                    ">
+                        ${result.riskLevel} Risk
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <div style="padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <p style="color: #9CA3AF; font-size: 0.75rem; margin-bottom: 4px;">Price</p>
+                        <p style="font-weight: 600;">$${result.price}</p>
+                    </div>
+                    <div style="padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <p style="color: #9CA3AF; font-size: 0.75rem; margin-bottom: 4px;">Liquidity</p>
+                        <p style="font-weight: 600;">$${result.liquidity.toLocaleString()}</p>
+                    </div>
+                    <div style="padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <p style="color: #9CA3AF; font-size: 0.75rem; margin-bottom: 4px;">Whale Activity</p>
+                        <p style="font-weight: 600;">${result.whaleActivity}</p>
+                    </div>
+                    <div style="padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <p style="color: #9CA3AF; font-size: 0.75rem; margin-bottom: 4px;">Recommendation</p>
+                        <p style="font-weight: 600; font-size: 0.75rem;">${result.riskLevel === 'Low' ? 'BUY' : result.riskLevel === 'Medium' ? 'CAUTION' : 'AVOID'}</p>
+                    </div>
+                </div>
+                
+                <div style="
+                    padding: 12px 16px;
+                    background: ${riskColor}15;
+                    border-radius: 8px;
+                    border-left: 3px solid ${riskColor};
+                ">
+                    <p style="font-size: 0.875rem; line-height: 1.5;">${result.recommendation}</p>
+                </div>
+            `;
+
+            // Insert after the quick actions
+            const quickActions = document.querySelector('.hero-text .flex.flex-wrap.gap-3');
+            if (quickActions) {
+                quickActions.parentNode.insertBefore(resultContainer, quickActions.nextSibling);
+            }
+        }
+
+        function displayError(message) {
+            const existingResult = document.getElementById('scanResultContainer');
+            if (existingResult) {
+                existingResult.remove();
+            }
+
+            const errorContainer = document.createElement('div');
+            errorContainer.id = 'scanResultContainer';
+            errorContainer.style.cssText = `
+                margin-top: 20px;
+                padding: 16px;
+                background: rgba(255, 59, 48, 0.1);
+                border: 1px solid rgba(255, 59, 48, 0.3);
+                border-radius: 12px;
+                color: #FF3B30;
+                text-align: center;
+            `;
+            errorContainer.innerHTML = `<p>${message}</p>`;
+
+            const quickActions = document.querySelector('.hero-text .flex.flex-wrap.gap-3');
+            if (quickActions) {
+                quickActions.parentNode.insertBefore(errorContainer, quickActions.nextSibling);
+            }
+        }
+
+        // Expose fillExample to global scope for onclick handlers
+        window.fillExample = function(address) {
+            if (scanInput) {
+                scanInput.value = address;
+                inputValue = address;
+            }
+        };
+    </script>
+    
+    <!-- Helper Functions -->
+    <script>
+        // Handle window resize for responsive coin size
+        window.addEventListener('resize', () => {
+            const coinTargets = document.querySelectorAll('.rotating-coin-target');
+            coinTargets.forEach(target => {
+                const component = target.querySelector('.coin-3d-container');
+                if (component) {
+                    const newSize = window.innerWidth < 768 ? 250 : 400;
+                    component.style.width = `${newSize}px`;
+                    component.style.height = `${newSize}px`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
