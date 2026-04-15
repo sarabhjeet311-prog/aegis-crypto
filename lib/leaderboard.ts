@@ -86,7 +86,7 @@ export function updateLeaderboard(token: string | { name: string; symbol: string
 
     // Handle both string key and object parameter
     let key: string;
-    let entryData: { name?: string; aegisScore?: number; type?: string };
+let entryData: { name?: string; aegisScore?: number; type?: string; logo?: string };
     
     if (typeof token === 'string') {
       key = token;
