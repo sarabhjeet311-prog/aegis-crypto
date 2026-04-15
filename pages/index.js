@@ -148,13 +148,13 @@ export default function ScannerPage() {
                     onClick={() => handleQuickScan('eth')}
                     className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-sm text-gray-300 hover:text-white hover:border-white/40 transition-all duration-200"
                   >
-                    ?? Demo Token
+                    🧪 Demo Token
                   </button>
                   <button
                     onClick={() => handleQuickScan('0x742d35Cc6634C0532925a3b844Bc454e4438f44e')}
                     className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-sm text-gray-300 hover:text-white hover:border-white/40 transition-all duration-200"
                   >
-                    ?? Example Wallet
+                    👛 Example Wallet
                   </button>
                 </div>
                 {loading && <p className="text-sm text-slate-400 mt-2">Analyzing on-chain data, liquidity depth and wallet behavior...</p>}
@@ -192,15 +192,15 @@ export default function ScannerPage() {
                       </div>
 
                       <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid #1f2937' }}>
-                        <p><strong>Price ??:</strong> ${scanResult.data.price?.toLocaleString(undefined, { maximumFractionDigits: 8 }) || 'N/A'}</p>
-                        <p><strong>Market Cap ??:</strong> ${scanResult.data.marketCap?.toLocaleString() || 'N/A'}</p>
-                        <p><strong>Liquidity ??:</strong> ${scanResult.data.liquidity?.toLocaleString() || 'N/A'}</p>
-                        <p><strong>Volume 24h ??:</strong> ${scanResult.data.volume?.toLocaleString() || 'N/A'}</p>
-                        <p><strong>Holders ??:</strong> {scanResult.data.holderCount || 'N/A'}</p>
+                        <p><strong>Price 💰:</strong> ${scanResult.data.price?.toLocaleString(undefined, { maximumFractionDigits: 8 }) || 'N/A'}</p>
+                        <p><strong>Market Cap 📊:</strong> ${scanResult.data.marketCap?.toLocaleString() || 'N/A'}</p>
+                        <p><strong>Liquidity 💧:</strong> ${scanResult.data.liquidity?.toLocaleString() || 'N/A'}</p>
+                        <p><strong>Volume 24h 📈:</strong> ${scanResult.data.volume?.toLocaleString() || 'N/A'}</p>
+                        <p><strong>Holders 👥:</strong> {scanResult.data.holderCount || 'N/A'}</p>
                       </div>
 
                       <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid #1f2937' }}>
-                        <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px', color: '#60a5fa' }}>?? AI Analysis</h3>
+                        <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px', color: '#60a5fa' }}>🤖 AI Analysis</h3>
                         <p><strong>AEGIS Score:</strong> <span style={{ color: scanResult.data.aegisScore >= 75 ? '#22c55e' : scanResult.data.aegisScore >= 50 ? '#eab308' : '#ef4444', fontWeight: 'bold', fontSize: '18px' }}>{scanResult.data.aegisScore}/100</span></p>
                         <p><strong>Risk Level:</strong> {scanResult.data.riskLevel} {scanResult.data.emojis}</p>
                         {scanResult.data.warnings?.length > 0 && <p><strong>Warnings:</strong> {scanResult.data.warnings.join(' ')}</p>}
@@ -224,7 +224,7 @@ export default function ScannerPage() {
                       </div>
 
                       <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid #1f2937' }}>
-                        <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px', color: '#60a5fa' }}>?? Flags</h3>
+                        <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px', color: '#60a5fa' }}>🚩 Flags</h3>
                         {scanResult.data.flags?.map((flag, index) => (
                           <p key={index}><strong>-</strong> {flag}</p>
                         ))}
@@ -234,7 +234,7 @@ export default function ScannerPage() {
                         <div>
                           <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px', color: '#60a5fa' }}>Recent Activity</h3>
                           {scanResult.data.recentActivity.map((tx, index) => (
-                            <p key={index}>{new Date(tx.timeStamp).toLocaleString()} � {tx.direction} � {tx.valueEth.toFixed(4)} ETH</p>
+                            <p key={index}>{new Date(tx.timeStamp).toLocaleString()} • {tx.direction} • {tx.valueEth.toFixed(4)} ETH</p>
                           ))}
                         </div>
                       )}
