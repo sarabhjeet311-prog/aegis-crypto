@@ -15,7 +15,7 @@ const RotatingCoin3D: React.FC<RotatingCoin3DProps> = ({ size = 260 }) => {
     const animate = () => {
       rotation += 0.5; // Speed of rotation
       if (wrapperRef.current) {
-        wrapperRef.current.style.transform = `rotateY(${rotation}deg) translateY(${Math.sin(rotation * 0.01) * 5}px)`;
+        wrapperRef.current.style.transform = `rotateX(15deg) rotateY(${rotation}deg) translateY(${Math.sin(rotation * 0.01) * 5}px)`;
       }
       animationId = requestAnimationFrame(animate);
     };
@@ -46,7 +46,6 @@ const RotatingCoin3D: React.FC<RotatingCoin3DProps> = ({ size = 260 }) => {
           height: `${size}px`,
           position: 'relative',
           transformStyle: 'preserve-3d',
-          transition: 'transform 0.3s ease',
           willChange: 'transform'
         }}
       >
